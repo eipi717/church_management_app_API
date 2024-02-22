@@ -15,4 +15,5 @@ class AnnouncementDTO(BaseModel):
         return Announcement(announcement_date=self.announcement_date,
                             announcement_content=self.announcement_content,
                             announcement_author=self.announcement_author, announcement_status=self.announcement_status,
-                            announcement_title=self.announcement_title)
+                            announcement_title=self.announcement_title, announcement_updated_at=datetime.datetime.now(),
+                            )

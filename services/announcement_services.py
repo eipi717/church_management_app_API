@@ -1,7 +1,10 @@
 # Import necessary libraries and modules
+import datetime
+
 from DTOs.announcementDTO import AnnouncementDTO
 from models.announcement_model import Announcement
 from helpers.announcement_helper import update_announcement_by_new_announcement
+from services.logger_services import init_loggers
 from utils.database_utils import init_db
 from utils.logging_utils import Logger
 from enums.logging_enums import LogLevel
@@ -11,8 +14,7 @@ from fastapi.responses import JSONResponse
 from fastapi import HTTPException, status as STATUS
 
 # Initialize debug and error loggers
-debug_logger = Logger(name=os.path.basename(__file__), level=str(LogLevel.DEBUG)).create_logger()
-error_logger = Logger(name=os.path.basename(__file__), level=str(LogLevel.ERROR)).create_logger()
+debug_logger, error_logger = init_loggers(os.path.basename(__file__))
 
 
 def get_announcement_list():
@@ -38,6 +40,9 @@ def get_announcement_list():
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    finally:
+        session.close()
 
 
 def get_announcement_by_id(announcement_id: int):
@@ -71,6 +76,9 @@ def get_announcement_by_id(announcement_id: int):
         error_logger.error(str(e))
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+    finally:
+        session.close()
+
 
 def create_announcement(announcement_dto: AnnouncementDTO):
     """
@@ -80,7 +88,10 @@ def create_announcement(announcement_dto: AnnouncementDTO):
 
     try:
         # Add the new announcement to the session and commit
-        session.add(announcement_dto.transform())
+        announcement: Announcement = announcement_dto.transform()
+        announcement.announcement_created_time = datetime.datetime.now()
+        announcement.announcement_updated_at = datetime.datetime.now()
+        session.add(announcement)
         session.commit()
 
         # Log success and return the created announcement
@@ -94,6 +105,9 @@ def create_announcement(announcement_dto: AnnouncementDTO):
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    finally:
+        session.close()
 
 
 def update_announcement(announcement_dto: AnnouncementDTO, announcement_id: int):
@@ -129,6 +143,9 @@ def update_announcement(announcement_dto: AnnouncementDTO, announcement_id: int)
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    finally:
+        session.close()
 
 
 def delete_announcement(announcement_id: int):
@@ -166,3 +183,6 @@ def delete_announcement(announcement_id: int):
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    finally:
+        session.close()

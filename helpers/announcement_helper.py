@@ -1,3 +1,5 @@
+import datetime
+
 from models.announcement_model import Announcement
 
 
@@ -10,5 +12,6 @@ def update_announcement_by_new_announcement(old_announcement: Announcement,
     old_announcement.announcement_author = new_announcement.announcement_author
     old_announcement.announcement_content = new_announcement.announcement_content
     old_announcement.announcement_status = new_announcement.announcement_status
+    old_announcement.announcement_updated_at = datetime.datetime.now()
 
     return old_announcement
