@@ -1,6 +1,6 @@
-import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, INT, DATE, TEXT, VARCHAR, BOOLEAN
+from helpers.user_helper import hash_password_SHA256
 
 Base = declarative_base()
 
@@ -26,16 +26,13 @@ class User(Base):
                  user_status: bool,
                  user_first_name: str,
                  user_last_name: str,
-                 user_updated_at: datetime.datetime
                  ):
         self.user_username = user_name
-        self.user_password_hash = password_hash
+        self.user_password_hash = hash_password_SHA256(password_hash)
         self.user_role = user_role
-        self.user_status = user_status,
+        self.user_status = user_status
         self.user_first_name = user_first_name
         self.user_last_name = user_last_name
-        self.user_updated_at = user_updated_at
-
     def transform_to_dict(self):
         return {
             'id': self.user_id,
@@ -50,3 +47,10 @@ class User(Base):
             'last_login': self.user_last_login
         }
 
+    def to_dict_basic_information(self):
+        return {
+            'id': self.user_id,
+            'username': self.user_username,
+            'password': self.user_password_hash,
+            'last_login': self.user_last_login
+        }

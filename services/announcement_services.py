@@ -98,12 +98,13 @@ def create_announcement(announcement_dto: AnnouncementDTO):
         debug_logger.info("Created the announcement successfully!")
         return JSONResponse(
             status_code=STATUS.HTTP_200_OK,
-            content=HttpResponse(message='Succeed!', data=[announcement_dto.transform()]).convert_to_json()
+            content=HttpResponse(message='Succeed!', data=announcement.transform_to_dict()).convert_to_json()
         )
 
     except Exception as e:
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
+        session.rollback()
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
     finally:
@@ -142,6 +143,7 @@ def update_announcement(announcement_dto: AnnouncementDTO, announcement_id: int)
     except Exception as e:
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
+        session.rollback()
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
     finally:
@@ -182,6 +184,7 @@ def delete_announcement(announcement_id: int):
     except Exception as e:
         # Log the error and raise HTTP exception
         error_logger.error(str(e))
+        session.rollback()
         raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
     finally:
