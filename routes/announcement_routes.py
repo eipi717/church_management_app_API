@@ -5,14 +5,13 @@ from DTOs.announcementDTO import AnnouncementDTO
 router = APIRouter()
 
 
-@router.get('/getAnnouncements')
+@router.get('/getAllAnnouncements')
 async def get_announcements():
     return announcement_services.get_announcement_list()
 
 
 @router.get('/getAnnouncementById/{announcement_id}')
 async def create_announcements(announcement_id: int):
-    print(announcement_id)
     return announcement_services.get_announcement_by_id(announcement_id=announcement_id)
 
 

@@ -8,7 +8,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
 
-    user_id = Column(INT, primary_key=True, name="id")
+    user_id = Column(INT, primary_key=True, name="user_id")
     user_username = Column(DATE, name="username")
     user_password_hash = Column(TEXT, name="password_hash")
     user_status = Column(BOOLEAN, name="status")
@@ -33,9 +33,10 @@ class User(Base):
         self.user_status = user_status
         self.user_first_name = user_first_name
         self.user_last_name = user_last_name
+
     def transform_to_dict(self):
         return {
-            'id': self.user_id,
+            'user_id': self.user_id,
             'username': self.user_username,
             'password_hash': self.user_password_hash,
             'status': self.user_status,
@@ -49,8 +50,11 @@ class User(Base):
 
     def to_dict_basic_information(self):
         return {
-            'id': self.user_id,
+            'user_id': self.user_id,
             'username': self.user_username,
             'password': self.user_password_hash,
             'last_login': self.user_last_login
         }
+
+    def find_booking(self):
+        print(self.bookings)

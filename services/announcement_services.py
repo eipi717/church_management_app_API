@@ -5,6 +5,7 @@ from DTOs.announcementDTO import AnnouncementDTO
 from models.announcement_model import Announcement
 from helpers.announcement_helper import update_announcement_by_new_announcement
 from services.logger_services import init_loggers
+from utils import response_utils
 from utils.database_utils import init_db
 from utils.logging_utils import Logger
 from enums.logging_enums import LogLevel
@@ -60,16 +61,14 @@ def get_announcement_by_id(announcement_id: int):
             debug_logger.debug(f"Announcement with id {announcement_id} not found!")
             return JSONResponse(
                 status_code=STATUS.HTTP_404_NOT_FOUND,
-                content=HttpResponse(message=f"Announcement with id {announcement_id} not found!",
-                                     data=[]).convert_to_json()
+                content=response_utils.empty_response(message=f'Announcement with id {announcement_id} not found!')
             )
         else:
             # Return the found announcement
             debug_logger.info(f"Announcement with id {announcement_id} found!")
             return JSONResponse(
                 status_code=STATUS.HTTP_200_OK,
-                content=HttpResponse(message='', data=[announcement.transform_to_dict()]).convert_to_json()
-            )
+                content=response_utils.response_with_data(data=[announcement.transform_to_dict()]))
 
     except Exception as e:
         # Log the error and raise HTTP exception
@@ -98,8 +97,7 @@ def create_announcement(announcement_dto: AnnouncementDTO):
         debug_logger.info("Created the announcement successfully!")
         return JSONResponse(
             status_code=STATUS.HTTP_200_OK,
-            content=HttpResponse(message='Succeed!', data=announcement.transform_to_dict()).convert_to_json()
-        )
+            content=response_utils.response_with_data(data=announcement.transform_to_dict()))
 
     except Exception as e:
         # Log the error and raise HTTP exception
@@ -124,8 +122,7 @@ def update_announcement(announcement_dto: AnnouncementDTO, announcement_id: int)
             debug_logger.debug(f"Announcement with id {announcement_id} not found!")
             return JSONResponse(
                 status_code=STATUS.HTTP_404_NOT_FOUND,
-                content=HttpResponse(message=f"Announcement with id {announcement_id} not found!",
-                                     data=[]).convert_to_json()
+                content=response_utils.empty_response(message=f"Announcement with id {announcement_id} not found!")
             )
         else:
             # Update the announcement with new data and commit
@@ -137,8 +134,7 @@ def update_announcement(announcement_dto: AnnouncementDTO, announcement_id: int)
             debug_logger.info(f"Announcement with id {announcement_id} updated!")
             return JSONResponse(
                 status_code=STATUS.HTTP_200_OK,
-                content=HttpResponse(message='', data=[announcement.transform_to_dict()]).convert_to_json()
-            )
+                content=response_utils.response_with_data(data=[announcement.transform_to_dict()]))
 
     except Exception as e:
         # Log the error and raise HTTP exception
@@ -165,8 +161,7 @@ def delete_announcement(announcement_id: int):
             debug_logger.debug(f"Announcement with id {announcement_id} not found!")
             return JSONResponse(
                 status_code=STATUS.HTTP_404_NOT_FOUND,
-                content=HttpResponse(message=f"Announcement with id {announcement_id} not found!",
-                                     data=[]).convert_to_json()
+                content=response_utils.empty_response(message=f"Announcement with id {announcement_id} not found!")
             )
         else:
             # Delete the announcement with new data and commit
@@ -178,8 +173,7 @@ def delete_announcement(announcement_id: int):
             debug_logger.info(f"Announcement with id {announcement_id} deleted!")
             return JSONResponse(
                 status_code=STATUS.HTTP_200_OK,
-                content=HttpResponse(message='', data=[announcement.transform_to_dict()]).convert_to_json()
-            )
+                content=response_utils.response_with_data(data=[announcement.transform_to_dict()]))
 
     except Exception as e:
         # Log the error and raise HTTP exception

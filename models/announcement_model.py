@@ -8,7 +8,7 @@ Base = declarative_base()
 class Announcement(Base):
     __tablename__ = 'announcement'
 
-    announcement_id = Column(INT, primary_key=True, name="id")
+    announcement_id = Column(INT, primary_key=True, name="announcement_id")
     announcement_date = Column(DATE, name="date")
     announcement_content = Column(TEXT, name="content")
     announcement_title = Column(VARCHAR, name="title")
@@ -34,7 +34,7 @@ class Announcement(Base):
 
     def transform_to_dict(self):
         return {
-            'id': self.announcement_id,
+            'announcement_id': self.announcement_id,
             'date': self.announcement_date,
             'content': self.announcement_content,
             'title': self.announcement_title,

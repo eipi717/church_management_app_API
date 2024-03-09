@@ -11,6 +11,11 @@ async def get_users():
     return user_services.get_users_list()
 
 
+@router.get('/getUserById/{user_id}')
+async def get_user_by_id(user_id: int):
+    return user_services.get_user_by_id(user_id=user_id)
+
+
 @router.post('/createUsers')
 async def create_users(user: UserDTO):
     return user_services.create_user(user_dto=user)
