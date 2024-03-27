@@ -7,12 +7,11 @@ from helpers.announcement_helper import update_announcement_by_new_announcement
 from services.logger_services import init_loggers
 from utils import response_utils
 from utils.database_utils import init_db
-from utils.logging_utils import Logger
-from enums.logging_enums import LogLevel
 import os
 from models.http_response_model import HttpResponse
 from fastapi.responses import JSONResponse
 from fastapi import HTTPException, status as STATUS
+from sqlalchemy.orm import Query
 
 # Initialize debug and error loggers
 debug_logger, error_logger = init_loggers(os.path.basename(__file__))
@@ -27,7 +26,9 @@ def get_announcement_list():
 
     try:
         # Query all announcements
-        announcements = session.query(Announcement).all()
+        query: Query = session.query(Announcement)
+
+        announcements: [Announcement] = query.all()
 
         # Transform announcements to a list of dictionaries
         announcement_list = [announcement.transform_to_dict() for announcement in announcements]
@@ -54,7 +55,9 @@ def get_announcement_by_id(announcement_id: int):
 
     try:
         # Query the specific announcement by ID
-        announcement = session.query(Announcement).filter(Announcement.announcement_id == announcement_id).first()
+        query: Query = session.query(Announcement).filter(Announcement.announcement_id == announcement_id)
+
+        announcement: Announcement = query.first()
 
         # Handle the case where the announcement doesn't exist
         if announcement is None:
@@ -115,7 +118,9 @@ def update_announcement(announcement_dto: AnnouncementDTO, announcement_id: int)
 
     try:
         # Fetch the announcement to be updated
-        announcement = session.query(Announcement).filter(Announcement.announcement_id == announcement_id).first()
+        query: Query = session.query(Announcement).filter(Announcement.announcement_id == announcement_id)
+
+        announcement: Announcement = query.first()
 
         if announcement is None:
             # Handle the case where the announcement doesn't exist

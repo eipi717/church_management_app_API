@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, INT, DATE, ForeignKey
+from sqlalchemy import Column, INT, DATE, BOOLEAN, ForeignKey
 from sqlalchemy.orm import relationship
 from models.user_model import User
 from models.room_model import Room
@@ -17,6 +17,7 @@ class Booking(Base):
     booking_end_time = Column(DATE, name='end_time')
     booing_created_at = Column(DATE, name='created_at')
     booking_last_updated_at = Column(DATE, name='last_updated')
+    booking_is_canceled = Column(BOOLEAN, name='isCanceled')
     user_id = Column(INT, ForeignKey(User.user_id), nullable=False)
     room_id = Column(INT, ForeignKey(Room.room_id), nullable=False)
     user = relationship(User, backref='booking')
@@ -40,6 +41,7 @@ class Booking(Base):
             'booking_end_time': self.booking_end_time,
             'booking_user_id': self.user_id,
             'booking_room_id': self.room_id,
+            'booking_is_canceled': self.booking_is_canceled,
             'booking_created_at': self.booing_created_at,
             'booking_last_updated_at': self.booking_last_updated_at
         }

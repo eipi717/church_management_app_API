@@ -5,6 +5,7 @@ from utils.database_utils import init_db
 from models.room_model import Room
 from fastapi.responses import JSONResponse
 from fastapi import status as STATUS, HTTPException
+from sqlalchemy.orm import Query
 
 
 # Initialize debug and error loggers
@@ -19,7 +20,9 @@ def get_rooms_list():
     session = init_db()
 
     try:
-        rooms = session.query(Room).all()
+        query: Query = session.query(Room)
+
+        rooms: [Room] = query.all()
 
         # Transform room to a list of dictionaries
         rooms_list = [room.transform_to_dict() for room in rooms]

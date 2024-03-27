@@ -31,10 +31,10 @@ def login(username: str, password: str):
     if not is_password_correct:
         return JSONResponse(status_code=STATUS.HTTP_401_UNAUTHORIZED,
                             content=response_utils.empty_response(message='Incorrect password!'))
-
+    print([user.to_dict_basic_information()])
     return JSONResponse(status_code=STATUS.HTTP_200_OK,
                         content=response_utils.response_with_data(
-                            data=[user.to_dict_basic_information()]).convert_to_json())
+                            data=[user.to_dict_basic_information()]))
 
 
 if __name__ == '__main__':

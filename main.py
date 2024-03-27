@@ -4,6 +4,7 @@ from routes.user_routes import router as user_router
 from routes.auth_routes import router as auth_router
 from routes.room_routes import router as room_router
 from routes.booking_routes import router as booking_router
+from fastapi_pagination import add_pagination
 
 app = FastAPI()
 
@@ -17,4 +18,4 @@ app.include_router(room_router, prefix='/room')
 
 app.include_router(booking_router, prefix='/booking')
 
-
+add_pagination(app)

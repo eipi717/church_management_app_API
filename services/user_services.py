@@ -10,6 +10,7 @@ from utils.database_utils import init_db
 import os
 from fastapi.responses import JSONResponse
 from fastapi import HTTPException, status as STATUS
+from sqlalchemy.orm import Query
 
 # Initialize debug and error loggers
 debug_logger, error_logger = init_loggers(os.path.basename(__file__))
@@ -24,7 +25,9 @@ def get_users_list():
 
     try:
         # Query all users
-        users = session.query(User).all()
+        query: Query = session.query(User)
+
+        users: [User] = query.all()
 
         # Transform user to a list of dictionaries
         users_list = [user.transform_to_dict() for user in users]
@@ -51,7 +54,9 @@ def get_user_by_id(user_id: int):
 
     try:
         # Query the specific User by ID
-        user = session.query(User).filter(User.user_id == user_id).first()
+        query: Query = session.query(User).filter(User.user_id == user_id)
+
+        user: User = query.first()
 
         # Handle the case where the User doesn't exist
         if user is None:
@@ -109,7 +114,9 @@ def change_password(user_change_password: UserChangePasswordDTO):
 
     session = init_db()
 
-    user = session.query(User).filter(User.user_id == user_change_password.user_id).first()
+    query: Query = session.query(User).filter(User.user_id == user_change_password.user_id)
+
+    user: User = query.first()
 
     if user is None:
         debug_logger.info("User not found")
