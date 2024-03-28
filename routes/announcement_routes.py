@@ -6,8 +6,8 @@ router = APIRouter()
 
 
 @router.get('/getAllAnnouncements')
-async def get_announcements():
-    return announcement_services.get_announcement_list()
+async def get_announcements(page: int, numberOfRecords: int):
+    return announcement_services.get_announcement_list(page=page, number_of_records=numberOfRecords)
 
 
 @router.get('/getAnnouncementById/{announcement_id}')

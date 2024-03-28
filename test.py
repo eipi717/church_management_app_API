@@ -1,13 +1,8 @@
-def plusOne(digits):
-
-
-
 
 
 
 if __name__ == '__main__':
-    digits = [1, 2, 3]
-    # digits = [4, 3, 2, 1]
-    # digits = [9]
+    nums1 = [4,9,5]
+    nums2 = [9,4,9,8,4]
 
-    print(plusOne(digits))
+    print(set(nums1) &  nums2)

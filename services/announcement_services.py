@@ -17,7 +17,7 @@ from sqlalchemy.orm import Query
 debug_logger, error_logger = init_loggers(os.path.basename(__file__))
 
 
-def get_announcement_list():
+def get_announcement_list(page: int, number_of_records: int):
     """
     Fetches and returns a list of all announcements from the database.
     """
@@ -28,7 +28,7 @@ def get_announcement_list():
         # Query all announcements
         query: Query = session.query(Announcement)
 
-        announcements: [Announcement] = query.all()
+        announcements: [Announcement] = query.offset((page - 1) * 10).limit(number_of_records).all()
 
         # Transform announcements to a list of dictionaries
         announcement_list = [announcement.transform_to_dict() for announcement in announcements]

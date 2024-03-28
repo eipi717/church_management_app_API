@@ -15,7 +15,7 @@ from fastapi import status as STATUS, HTTPException
 debug_logger, error_logger = init_loggers(os.path.basename(__file__))
 
 
-def get_booking_list(is_canceled: bool):
+def get_booking_list(is_canceled: bool, page: int, number_of_records: int):
     """
     Fetches and returns a list of all booking from the database.
     """
@@ -26,7 +26,7 @@ def get_booking_list(is_canceled: bool):
         # Query all bookings
         query: Query = session.query(Booking).filter(Booking.booking_is_canceled == is_canceled)
 
-        bookings: [Booking] = query.all()
+        bookings: [Booking] = query.offset(10 * (page - 1)).limit(number_of_records).all()
 
         # Transform booking to a list of dictionaries
         bookings_list = [booking.transform_to_dict() for booking in bookings]

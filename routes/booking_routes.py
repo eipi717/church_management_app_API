@@ -6,9 +6,9 @@ from DTOs.bookingDTO import BookingDTO
 router = APIRouter()
 
 
-@router.get('/getAllBookings/isCanceled={is_canceled}')
-async def get_bookings(is_canceled: bool):
-    return booking_services.get_booking_list(is_canceled=is_canceled)
+@router.get('/getAllBookings')
+async def get_bookings(isCanceled: bool, page: int, numberOfRecords: int):
+    return booking_services.get_booking_list(is_canceled=isCanceled, page=page, number_of_records=numberOfRecords)
 
 
 @router.get('/getBookingByUserId/{user_id}')

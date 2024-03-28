@@ -12,7 +12,7 @@ from sqlalchemy.orm import Query
 debug_logger, error_logger = init_loggers(os.path.basename(__file__))
 
 
-def get_rooms_list():
+def get_rooms_list(page: int, number_of_records: int):
     """
     Fetches and returns a list of all rooms from the database.
     """
@@ -22,7 +22,7 @@ def get_rooms_list():
     try:
         query: Query = session.query(Room)
 
-        rooms: [Room] = query.all()
+        rooms: [Room] = query.offset((page - 1) * 10).limit(number_of_records).all()
 
         # Transform room to a list of dictionaries
         rooms_list = [room.transform_to_dict() for room in rooms]
