@@ -126,7 +126,7 @@ def create_booking(booking_dto: BookingDTO):
         booking.booking_last_updated_at = datetime.datetime.now()
         session.add(booking)
         session.commit()
-        debug_logger.info("Created the announcement successfully!")
+        debug_logger.info("Created the booking successfully!")
         return JSONResponse(
             status_code=STATUS.HTTP_200_OK,
             content=response_utils.response_with_data(data=booking.transform_to_dict()))
@@ -139,3 +139,31 @@ def create_booking(booking_dto: BookingDTO):
 
     finally:
         session.close()
+
+
+def cancel_booking(booking_id: int):
+    session = init_db()
+
+    try:
+        query: Query = session.query(Booking).filter(Booking.booking_id == booking_id)
+
+        booking: Booking = query.first()
+
+        booking.booking_is_canceled = True
+
+        session.commit()
+
+        debug_logger.info(f"Booking with id {booking_id} canceled!")
+        return JSONResponse(
+            status_code=STATUS.HTTP_200_OK,
+            content=response_utils.empty_response(message=''))
+
+    except Exception as e:
+        # Log the error and raise HTTP exception
+        error_logger.error(str(e))
+        session.rollback()
+        raise HTTPException(status_code=STATUS.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+    finally:
+        session.close()
+
