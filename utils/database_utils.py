@@ -9,6 +9,8 @@ SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 def init_db() -> Session:
+    print("hello@?")
+    print(SQLALCHEMY_DATABASE_URL)
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

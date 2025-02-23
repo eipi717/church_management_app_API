@@ -21,7 +21,9 @@ def get_users_list():
     Fetches and returns a list of all users from the database.
     """
     # Create a new database session
+    print('helo')
     session = init_db()
+    print(session)
 
     try:
         # Query all users

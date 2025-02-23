@@ -126,6 +126,7 @@ def create_booking(booking_dto: BookingDTO):
         booking.booking_last_updated_at = datetime.datetime.now()
         session.add(booking)
         session.commit()
+
         debug_logger.info("Created the booking successfully!")
         return JSONResponse(
             status_code=STATUS.HTTP_200_OK,

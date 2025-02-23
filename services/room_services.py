@@ -39,3 +39,30 @@ def get_rooms_list(page: int, number_of_records: int):
 
     finally:
         session.close()
+
+
+def inactive_room(room_id: int) -> None:
+    session = init_db()
+
+    try:
+        # Query the specific booking by user_id
+        query: Query = session.query(Room).filter(Room.room_id == room_id)
+
+        room: Room = query.first()
+
+        # Handle the case where the Booking doesn't exist
+        if room is None:
+            debug_logger.debug(f"Room with id {room_id} not found!")
+
+        else:
+            debug_logger.info(f"Room with id {room_id} found!")
+            room.room_is_booked = False
+            session.commit()
+
+    except Exception as e:
+        # Log the error and raise HTTP exception
+        error_logger.error(str(e))
+        raise Exception(str(e))
+
+    finally:
+        session.close()
