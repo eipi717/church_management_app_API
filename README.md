@@ -31,7 +31,7 @@ pytest --log-cli-level=INFO tests/unit/
 
 Ideally you may see:
 ```bash
-==================== 51 passed in 0.24s ====================```
+==================== 51 passed in 0.24s ====================
 ```
 
 ### 🔄 Integration Tests (Coming Soon)
