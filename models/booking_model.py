@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, INT, DATE, BOOLEAN, ForeignKey
 from sqlalchemy.orm import relationship
 from models.user_model import User

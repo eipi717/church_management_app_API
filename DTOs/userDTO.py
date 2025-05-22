@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from models.user_model import User
 from typing import Optional
 
 
 class UserDTO(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., min_length=1)
+    password: str = Field(..., min_length=1)
     status: Optional[bool] = None
     role: Optional[str] = None
     first_name: Optional[str] = None

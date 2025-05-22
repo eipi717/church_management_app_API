@@ -6,6 +6,7 @@ import os
 load_dotenv()
 
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
+print(SQLALCHEMY_DATABASE_URL)
 
 
 def init_db() -> Session:

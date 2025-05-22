@@ -1,4 +1,4 @@
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, INT, DATE, TEXT, VARCHAR, BOOLEAN
 from helpers.user_helper import hash_password_SHA256
 
@@ -9,7 +9,7 @@ class User(Base):
     __tablename__ = 'user'
 
     user_id = Column(INT, primary_key=True, name="user_id")
-    user_username = Column(DATE, name="username")
+    user_username = Column(VARCHAR, name="username")
     user_password_hash = Column(TEXT, name="password_hash")
     user_status = Column(BOOLEAN, name="status")
     user_role = Column(VARCHAR, name="role")
